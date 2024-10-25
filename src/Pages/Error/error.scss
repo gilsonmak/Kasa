@@ -1,0 +1,41 @@
+.error-main {
+    display: flex;
+    flex-direction: column;
+  
+    .error-404 {
+      font-weight: 700;
+      font-size: 230px;
+      color: #FF6060;
+      text-align: center;
+      margin-bottom: 12px;
+  
+      @media (max-width: 768px) {
+        font-size: 96px;
+      }
+    }
+  
+    .error-message {
+      font-weight: 500;
+      color: #FF6060;
+      font-size: 36px;
+      text-align: center;
+      margin: 0;
+  
+      @media (max-width: 768px) {
+        font-size: 18px;
+      }
+    }
+
+    .link{
+        font-weight: 500;
+        display: flex;
+        justify-content: center;
+        text-decoration: underline;
+        margin: 180px 0;
+
+        @media (max-width: 768px) {
+            margin-bottom: 230px;
+        }
+    }
+  }
+  
