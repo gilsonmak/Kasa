@@ -1,0 +1,17 @@
+.collapse {
+    margin-left: 8%;
+    margin-right: 8%;
+    margin-bottom: 100px;
+}
+
+.title-about {
+    font-weight: 500;
+    font-size: 24px;
+    color: white;
+
+    @media (max-width: 768px) {
+        .title-about {
+            font-size: 13px;
+        }
+    }
+}

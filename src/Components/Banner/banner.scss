@@ -1,0 +1,69 @@
+// Variables SCSS
+$banner-height: 223px;
+$banner-height-mobile: 111px;
+$margin-bottom-desktop: 43px;
+$margin-bottom-mobile: 20px;
+$font-size-desktop: 48px;
+$font-size-mobile: 24px;
+$banner-radius: 25px;
+
+.banner{
+    &-home,
+    &-about{
+        height: $banner-height;
+        display: flex;
+        margin-bottom: $margin-bottom-desktop;
+        position: relative;
+    }
+
+    &-container{
+        width: 100%;
+        position: absolute;
+        height: $banner-height;
+        display: flex;
+        align-items: center;
+    }
+
+    &-image{
+        width: 100%;
+        height: 100%;
+        border-radius: $banner-radius;
+        object-fit: cover;
+        filter: brightness(70%);
+    }
+
+    &-title {
+        color: white;
+        text-align: center;
+        font-size: $font-size-desktop;
+        font-weight: 500;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+}
+
+@media (max-width: 768px){
+    .banner{
+        &-home{
+            height: $banner-height-mobile;
+            margin-bottom: $margin-bottom-mobile;
+        }
+
+        &-home .banner-container{
+            height: $banner-height-mobile;
+        }
+
+        &-title{
+            justify-content: left;
+            margin-left: 15px;
+            font-size: $font-size-mobile;
+        }
+
+        &-about {
+            margin-bottom: $margin-bottom-mobile;
+        }
+    }
+}
