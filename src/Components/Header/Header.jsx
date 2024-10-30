@@ -12,7 +12,7 @@ function Header() {
           Accueil
         </NavLink>
         <NavLink to="/aboutpage" activeClassName="active">
-          À Propos
+          A Propos
         </NavLink>
       </nav>
     </header>
