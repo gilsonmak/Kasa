@@ -1,0 +1,54 @@
+// Variables SCSS
+$background-color: black;
+$padding-top: 60px;
+$padding-bottom: 15px;
+$logo-width: 120px;
+$text-color: white;
+$font-weight: 500;
+$font-size-desktop: 24px;
+$font-size-mobile: 12px;
+
+// Ces variables définissent les valeurs réutilisables dans le style
+
+.footer {
+  background-color: $background-color;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: $padding-top;
+  padding-bottom: $padding-bottom;
+
+  // Style principal du footer :
+  // - Fond noir
+  // - Largeur totale
+  // - Disposition en colonne avec alignement centré
+  // - Padding en haut et en bas
+
+  .logo {
+    width: $logo-width;
+  }
+  // Style du logo dans le footer, définissant sa largeur
+
+  p {
+    color: $text-color;
+    align-items: flex-end;
+    font-weight: $font-weight;
+    font-size: $font-size-desktop;
+  }
+  // Style du texte dans le footer :
+  // - Couleur blanche
+  // - Alignement en bas
+  // - Police en gras
+  // - Taille de police pour desktop
+}
+
+@media (max-width: 768px) {
+  .footer {
+    p {
+      font-size: $font-size-mobile;
+    }
+  }
+  // Media query pour les écrans de taille mobile (max 768px) :
+  // - Réduit la taille de la police du texte
+}
