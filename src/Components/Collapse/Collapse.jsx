@@ -3,34 +3,38 @@ import PropTypes from "prop-types";
 import "../Collapse/Collapse.scss";
 import arrow from "../../Assets/arrow/down.png";
 
-
+// Composant Collapse qui prend deux props : collapseTitle et collapseDescription
 const Collapse = ({ collapseTitle, collapseDescription }) => {
+  // État pour gérer l'ouverture/fermeture du collapse
   const [isOpen, setIsOpen] = useState(false);
   
+  // Référence pour accéder directement à l'élément DOM du contenu
   const contentRef = useRef(null);
 
-  // Fonction pour inverser l'état d'ouverture du collapse
+  // Fonction pour basculer l'état d'ouverture du collapse
   const toggleCollapse = () => {
     setIsOpen(prevState => !prevState);
   };
 
+  // Effet pour ajuster la hauteur du contenu en fonction de l'état d'ouverture
   useEffect(() => {
     const content = contentRef.current;
     if (isOpen) {
-      // Si le collapse est ouvert, on définit la hauteur maximale comme étant la hauteur du contenu
+      // Si ouvert, définir la hauteur maximale à la hauteur du contenu
       content.style.maxHeight = `${content.scrollHeight}px`;
     } else {
+      // Si fermé, réduire la hauteur à 0
       content.style.maxHeight = "0px";
     }
-  }, [isOpen]); //useEffect sera déclenché à chaque fois que isOpen change
+  }, [isOpen]); // L'effet se déclenche chaque fois que isOpen change
 
   return (
     <div className="collapse-container">
-      {/* Conteneur du titre qui, lorsqu'il est cliqué, déclenche le basculement de l'état */}
+      {/* Conteneur du titre, cliquable pour ouvrir/fermer le collapse */}
       <div className="collapse-title-container" onClick={toggleCollapse}>
         <div className="collapse-title">
           {collapseTitle}
-          {/* Image de la flèche qui change d'orientation en fonction de l'état isOpen */}
+          {/* Icône de flèche qui tourne en fonction de l'état d'ouverture */}
           <img
             src={arrow}
             alt="flêche"
@@ -38,7 +42,7 @@ const Collapse = ({ collapseTitle, collapseDescription }) => {
           />
         </div>
       </div>
-      {/* Conteneur de la description du collapse, avec une référence pour ajuster la hauteur */}
+      {/* Conteneur du contenu du collapse, avec animation de hauteur */}
       <div
         ref={contentRef}
         className={`collapse-description ${isOpen ? "open" : ""}`}
@@ -49,10 +53,10 @@ const Collapse = ({ collapseTitle, collapseDescription }) => {
   );
 };
 
-// Définition des prop types pour assurer que les bonnes propriétés sont passées au composant
+// Validation des types de props
 Collapse.propTypes = {
-  collapseTitle: PropTypes.string.isRequired,
-  collapseDescription: PropTypes.node.isRequired, // Description du collapse, peut être n'importe quel noeud React
+  collapseTitle: PropTypes.string.isRequired, // Le titre doit être une chaîne de caractères
+  collapseDescription: PropTypes.node.isRequired, // La description peut être n'importe quel nœud React
 };
 
 export default Collapse;
