@@ -1,0 +1,19 @@
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+
+    .tag {
+        color: white;
+        font-size: 14px;
+        background-color: #FF6060;
+        border-radius: 10px;
+        padding: 3px 10px;
+        margin-right: 10px;
+        margin-bottom: 5px;
+
+        @media (max-width: 768px) {
+                font-size: 10px;
+        }
+    }
+}

@@ -1,0 +1,64 @@
+.carrousel {
+    margin: 0;
+    height: 415px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+
+    @media(max-width:768px){
+        height: 255px;
+    }
+  
+    .picture {
+      object-fit: cover;
+      height: 100%;
+      width: 100%;
+      border-radius: 25px;
+      transition: transform 0.5s ease-in-out;
+
+      @media(max-width:768px){
+        border-radius: 10px;
+      }
+    }
+  
+    .arrow-img {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 60px;
+      cursor: pointer;
+      transition: transform 0.2s;
+
+      @media(max-width:768px){
+        height: 20px;
+      }
+  
+      &.previous-arrow {
+        left: 10px;
+      }
+  
+      &.next-arrow {
+        right: 10px;
+      }
+  
+      &:hover {
+        transform: translateY(-50%) scale(1.2);
+      }
+    }
+  
+    .numbers {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 15px;
+
+     
+    }
+  }
+  

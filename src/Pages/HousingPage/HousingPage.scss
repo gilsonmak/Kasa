@@ -1,0 +1,153 @@
+/* Details infos appartement */
+.details {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  
+    @media (max-width: 768px) {
+      flex-direction: column;
+    }
+  }
+  
+  /* Titre et tags */
+  .tag-title {
+    margin-top: 30px;
+    margin-bottom: 24px;
+    color: black;
+  
+    @media (max-width: 768px) {
+      margin-top: 15px;
+    }
+  }
+  
+  .title {
+    h1 {
+      font-weight: 500;
+      font-size: 36px;
+      margin: 0;
+  
+      @media (max-width: 768px) {
+        font-size: 18px;
+      }
+    }
+  
+    h2 {
+      font-weight: 500;
+      font-size: 18px;
+      margin: 0;
+  
+      @media (max-width: 768px) {
+        font-size: 14px;
+      }
+    }
+  }
+  
+  /* Hôte de l'appartement et étoiles */
+  .stars-name {
+    margin-top: 24px;
+  
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      margin-top: 0;
+      margin-bottom: 16px;
+      justify-content: space-between;
+    }
+  }
+  
+  .host-name {
+    color: #FF6060;
+    font-size: 18px;
+  
+    @media (max-width: 768px) {
+      font-size: 12px;
+      align-self: flex-start;
+    }
+  }
+  
+  .host-name-picture {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 10px;
+  
+    @media (max-width: 768px) {
+      align-items: center;
+    }
+  }
+  
+  .host-picture {
+    border-radius: 50%;
+    height: 64px;
+    width: 64px;
+  
+    @media (max-width: 768px) {
+      height: 32px;
+      width: 32px;
+    }
+  }
+  
+  /* Collapse description et equipements */
+  .collapse-housing {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 320px;
+  
+    @media (max-width: 768px) {
+      flex-direction: column;
+      margin-bottom: 65px;
+      gap: 20px;
+    }
+  }
+  
+  .description-housing,
+  .equipments-housing {
+    width: 45%;
+  
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+  
+  .collapse-title {
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+  
+    @media (max-width: 768px) {
+      font-size: 13px;
+    }
+  }
+  
+  .collapse-description {
+    font-weight: 400;
+    font-size: 18px;
+  
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
+  }
+  
+  .list-equipement {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    padding: 0;
+    margin-top: 0;
+    font-size: 12px;
+  }
+  
+  .equipements {
+    list-style: none;
+    font-weight: 400;
+    font-size: 16px;
+    margin-bottom: 5px;
+  
+    @media (max-width: 768px) {
+      font-size: 12px;
+    }
+  }
+  
