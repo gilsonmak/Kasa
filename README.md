@@ -1,70 +1,101 @@
-# Getting Started with Create React App
+# Kasa — application de location immobilière
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Application React d'une plateforme de location entre particuliers, développée
+à partir d'une maquette Figma et d'un cahier des charges (projet de formation
+OpenClassrooms), puis reprise après une revue de code externe portant sur
+l'accessibilité et les tests.
 
-## Available Scripts
+React 18 · React Router 6 · Sass · Testing Library
 
-In the project directory, you can run:
+**Démo :** https://gilsonmak.github.io/Kasa
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Fonctionnalités
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Liste des logements sur la page d'accueil, chaque carte menant à sa fiche.
+- Fiche logement : carrousel de photos, note en étoiles, tags, sections
+  dépliables pour la description et les équipements.
+- Page « À propos » construite sur les mêmes sections dépliables.
+- Redirection vers une page 404 lorsqu'un identifiant de logement n'existe pas.
+- Affichage adapté du mobile au poste de travail.
 
-### `npm test`
+## Démarrage
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```bash
+npm install
+npm start      # http://localhost:3000
+npm test       # tests des composants
+npm run build
+```
 
-### `npm run build`
+## Structure
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+src/
+├── Components/     Card, Carrousel, Collapse, Ratings, Tag, Header, Footer, Banner
+├── Pages/          HomePage, HousingPage, AboutPage, ErrorPage
+├── Data/           logements.json, about.json
+└── Assets/
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Chaque composant interactif est accompagné de ses tests dans un dossier
+`__tests__` voisin.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Ce qui a été corrigé après revue
 
-### `npm run eject`
+Une revue externe a relevé trois défauts. Ils sont documentés ici parce qu'ils
+sont instructifs.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+**1. Le `useEffect` du carrousel n'avait pas de tableau de dépendances.**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Le nettoyage évitait l'accumulation d'écouteurs clavier, donc le bug ne se
+voyait pas. Mais l'écouteur était retiré puis réinstallé à chaque rendu, et
+surtout on ne pouvait plus dire quand l'effet se déclenchait. La correction
+combine `useCallback` pour stabiliser la fonction et un tableau de
+dépendances explicite.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+**2. Les éléments interactifs n'étaient pas des éléments interactifs.**
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Les flèches du carrousel étaient des `<img onClick>`, le titre dépliable un
+`<div onClick>`. Les trois conséquences : pas de focus au clavier, aucune
+réaction aux touches Entrée et Espace, et aucune annonce du rôle ni de l'état
+par un lecteur d'écran. Tout cela est désormais porté par de vrais `<button>`,
+avec `aria-expanded`, `aria-controls` et un anneau de focus visible. Le style
+natif du bouton est neutralisé en CSS : l'élément est choisi pour son
+comportement, pas pour son apparence.
 
-## Learn More
+Le composant de notation affichait par ailleurs cinq images portant chacune
+`alt="rating"` — un lecteur d'écran annonçait « rating » cinq fois sans jamais
+donner la note. Les étoiles sont maintenant décoratives et l'information est
+portée une seule fois : « Note : 3 sur 5 ».
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**3. Le seul test présent était celui généré par Create React App.**
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Il cherchait le texte « learn react », absent de l'application depuis
+longtemps : un test sans valeur, et probablement cassé. Il a été remplacé par
+20 tests portant sur le comportement réel, dont les cas limites explicitement
+signalés comme non couverts :
 
-### Code Splitting
+- carrousel à une seule image — pas de flèches, pas de compteur ;
+- liste d'images vide — le composant ne rend rien plutôt que de planter ;
+- bouclage dans les deux sens ;
+- navigation au clavier, et vérification que les flèches reçoivent bien le
+  focus — ce qu'un `<img onClick>` n'aurait jamais permis ;
+- ouverture du panneau dépliable à la touche Entrée ;
+- notes hors plage, bornées au lieu d'afficher n'importe quoi.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Limites connues
 
-### Analyzing the Bundle Size
+- Les données viennent d'un fichier JSON local, sans API ni backend.
+- Pas de TypeScript : les props sont validées par `prop-types`, ce qui ne
+  protège qu'à l'exécution et en développement.
+- Le panneau dépliable utilise `aria-hidden` plutôt que `hidden`, pour
+  conserver l'animation de hauteur. Le contenu n'étant que du texte, il n'y a
+  pas d'élément focalisable à neutraliser ; avec des liens à l'intérieur, il
+  faudrait revoir ce compromis.
+- Pas de test de bout en bout sur la navigation entre les pages.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+---
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Auteur : Gilson Makanounou — [github.com/gilsonmak](https://github.com/gilsonmak)

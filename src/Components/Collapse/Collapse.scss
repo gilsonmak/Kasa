@@ -2,6 +2,23 @@
     background-color: #FF6060;
     border-radius: 7px;
     margin-bottom: 30px;
+
+    // Réinitialisation du style natif du <button> : l'élément est choisi pour
+    // son comportement (focus clavier, Entrée/Espace, rôle annoncé), pas pour
+    // son apparence par défaut.
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: none;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+
+    &:focus-visible {
+        outline: 3px solid #0b3d91;
+        outline-offset: 2px;
+    }
 }
 
 .collapse-title{

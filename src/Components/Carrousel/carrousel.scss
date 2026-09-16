@@ -21,14 +21,37 @@
       }
     }
   
-    .arrow-img {
+    // Les flèches sont maintenant de vrais <button>. On neutralise le style
+    // natif du bouton (fond, bordure, padding) pour conserver l'apparence,
+    // sans renoncer au comportement clavier qu'apporte l'élément.
+    .arrow-button {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
       width: 30px;
       height: 60px;
+      padding: 0;
+      background: none;
+      border: none;
       cursor: pointer;
       transition: transform 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      // Anneau de focus visible : indispensable pour savoir où l'on se
+      // trouve en naviguant au clavier.
+      &:focus-visible {
+        outline: 3px solid #fff;
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
 
       @media(max-width:768px){
         height: 20px;

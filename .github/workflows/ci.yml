@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build:
+    name: Tests et build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: npm
+      - run: npm ci
+      # CI=true transforme les avertissements ESLint en erreurs : un problème
+      # d'accessibilité signalé par jsx-a11y fait échouer le build au lieu de
+      # défiler dans la console.
+      - run: CI=true npm test -- --watchAll=false
+      - run: CI=true npm run build
