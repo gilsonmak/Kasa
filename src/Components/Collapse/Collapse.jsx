@@ -1,50 +1,66 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useId } from "react";
 import PropTypes from "prop-types";
 import "../Collapse/Collapse.scss";
 import arrow from "../../Assets/arrow/down.png";
 
-// Composant Collapse qui prend deux props : collapseTitle et collapseDescription
 const Collapse = ({ collapseTitle, collapseDescription }) => {
-  // État pour gérer l'ouverture/fermeture du collapse
   const [isOpen, setIsOpen] = useState(false);
-  
-  // Référence pour accéder directement à l'élément DOM du contenu
   const contentRef = useRef(null);
 
-  // Fonction pour basculer l'état d'ouverture du collapse
-  const toggleCollapse = () => {
-    setIsOpen(prevState => !prevState);
-  };
+  // Identifiants uniques et stables, nécessaires pour relier le bouton au
+  // panneau qu'il contrôle (aria-controls / aria-labelledby).
+  const contentId = useId();
+  const buttonId = useId();
 
-  // Effet pour ajuster la hauteur du contenu en fonction de l'état d'ouverture
+  const toggleCollapse = () => setIsOpen((prev) => !prev);
+
   useEffect(() => {
     const content = contentRef.current;
-    if (isOpen) {
-      // Si ouvert, définir la hauteur maximale à la hauteur du contenu
-      content.style.maxHeight = `${content.scrollHeight}px`;
-    } else {
-      // Si fermé, réduire la hauteur à 0
-      content.style.maxHeight = "0px";
-    }
-  }, [isOpen]); // L'effet se déclenche chaque fois que isOpen change
+    if (!content) return;
+    content.style.maxHeight = isOpen ? `${content.scrollHeight}px` : "0px";
+  }, [isOpen]);
 
   return (
     <div className="collapse-container">
-      {/* Conteneur du titre, cliquable pour ouvrir/fermer le collapse */}
-      <div className="collapse-title-container" onClick={toggleCollapse}>
-        <div className="collapse-title">
+      {/*
+        <button> à la place du <div onClick> précédent.
+        Un div cliquable n'est pas atteignable au clavier, ne réagit ni à
+        Entrée ni à Espace, et n'est annoncé ni comme un bouton ni avec son
+        état ouvert/fermé. aria-expanded communique cet état, aria-controls
+        indique quel élément le bouton pilote.
+      */}
+      <button
+        type="button"
+        id={buttonId}
+        className="collapse-title-container"
+        onClick={toggleCollapse}
+        aria-expanded={isOpen}
+        aria-controls={contentId}
+      >
+        <span className="collapse-title">
           {collapseTitle}
-          {/* Icône de flèche qui tourne en fonction de l'état d'ouverture */}
           <img
             src={arrow}
-            alt="flêche"
+            alt=""
+            aria-hidden="true"
             className={`arrow-icon ${isOpen ? "arrow-up" : "arrow-down"}`}
           />
-        </div>
-      </div>
-      {/* Conteneur du contenu du collapse, avec animation de hauteur */}
+        </span>
+      </button>
+
       <div
+        id={contentId}
         ref={contentRef}
+        role="region"
+        aria-labelledby={buttonId}
+        // Le contenu replié reste dans le DOM pour que l'animation de hauteur
+        // fonctionne. aria-hidden le retire malgré tout de l'arbre
+        // d'accessibilité : sans cela, un lecteur d'écran lit du texte que
+        // l'utilisateur voyant ne voit pas.
+        // `hidden` serait plus strict mais supprimerait l'animation ; le
+        // contenu n'étant que du texte, il n'y a pas d'élément focalisable
+        // à neutraliser ici.
+        aria-hidden={!isOpen}
         className={`collapse-description ${isOpen ? "open" : ""}`}
       >
         {collapseDescription}
@@ -53,10 +69,9 @@ const Collapse = ({ collapseTitle, collapseDescription }) => {
   );
 };
 
-// Validation des types de props
 Collapse.propTypes = {
-  collapseTitle: PropTypes.string.isRequired, // Le titre doit être une chaîne de caractères
-  collapseDescription: PropTypes.node.isRequired, // La description peut être n'importe quel nœud React
+  collapseTitle: PropTypes.string.isRequired,
+  collapseDescription: PropTypes.node.isRequired,
 };
 
 export default Collapse;
